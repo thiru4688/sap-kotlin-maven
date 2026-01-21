@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController
 import reactor.core.publisher.Mono
 import sap.kotlin.maven.client.GraphQLClient
 import sap.kotlin.maven.model.UserDto
+import sap.kotlin.maven.model.UserEntity
 import java.util.Locale
 
 @RestController
@@ -20,5 +21,16 @@ class UserController(private val graphQLClient: GraphQLClient) {
     @GetMapping("/users")
     suspend fun getUsers(): List<UserDto> {
         return graphQLClient.fetchUsers()
+    }
+
+    @PostMapping("/createUser")
+    suspend fun createUser(
+        @RequestBody request: UserEntity
+    ): UserDto {
+        return graphQLClient.createUser(
+            request.id,
+            request.name,
+            request.email
+        )
     }
 }

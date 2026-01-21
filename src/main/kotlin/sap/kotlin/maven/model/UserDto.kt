@@ -8,3 +8,5 @@ data class UserDto(
     val name: String,
     val email: String
 )
+fun UserEntity.toDto() =
+    UserDto(id, name, email)
