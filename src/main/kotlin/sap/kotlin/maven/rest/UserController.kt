@@ -1,24 +1,40 @@
 package sap.kotlin.maven.rest
 
 
-import org.springframework.graphql.support.DefaultExecutionGraphQlRequest
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
-import reactor.core.publisher.Mono
+import org.springframework.web.bind.annotation.*
 import sap.kotlin.maven.client.GraphQLClient
 import sap.kotlin.maven.model.UserDto
-import java.util.Locale
+import sap.kotlin.maven.model.UsersDto
+import sap.kotlin.maven.service.UserService
 
 @RestController
-@RequestMapping("/api")
-class UserController(private val graphQLClient: GraphQLClient) {
+@RequestMapping("/users")
+class UserController(private val graphQLClient: GraphQLClient,
+                     private val service: UserService) {
 
-    @GetMapping("/users")
+    @GetMapping("/mock-data")
     suspend fun getUsers(): List<UserDto> {
         return graphQLClient.fetchUsers()
     }
+
+    @GetMapping
+    fun getAllUsers(): List<UsersDto> = service.getAllUsers()
+
+    @GetMapping("/{id}")
+    fun getUserById(@PathVariable id: Int): UsersDto? = service.getUserById(id)
+
+    @PostMapping
+    fun createUser(@RequestBody user: UsersDto): UsersDto = service.createUser(user)
+
+    @PutMapping("/{id}")
+    fun updateUser(@PathVariable id: Int, @RequestBody updated: Map<String, String>): UsersDto? {
+        val name = updated["name"]
+        val email = updated["email"]
+        return service.updateUser(id, UsersDto(id = id, name = name ?: "", email = email ?: ""))
+    }
+
+
+    @DeleteMapping("/{id}")
+    fun deleteUser(@PathVariable id: Int): Boolean = service.deleteUser(id)
+
 }

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Controller
 class UserGraphQLController {
 
     @QueryMapping
-    fun users(): List<UserDto> {
+    fun allUsers(): List<UserDto> {
         return mockUsers
     }
 }

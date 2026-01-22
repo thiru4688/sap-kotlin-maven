@@ -5,5 +5,13 @@ type User {
 }
 
 type Query {
-  users: [User!]
+  users: [User]
+  allUsers: [User]
+  userById(id: Int): User
+}
+
+type Mutation {
+  createUser(id: Int, name: String, email: String): User
+   updateUser(id: Int!, name: String!, email: String!): User
+  deleteUser(id: Int): Boolean
 }
