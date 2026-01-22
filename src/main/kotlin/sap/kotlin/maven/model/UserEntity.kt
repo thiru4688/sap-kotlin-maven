@@ -1,6 +1,6 @@
 package sap.kotlin.maven.model
 
-import jakarta.persistence.Column
+/*import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
@@ -12,8 +12,9 @@ import jakarta.persistence.Table
 data class UserEntity(
     @Id
     @Column(name = "id")
-    val id: String="",
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val id: Long = 0,
 
-    val name: String="",
-    val email: String=""
-)
+    var name: String="",
+    var email: String=""
+)*/
