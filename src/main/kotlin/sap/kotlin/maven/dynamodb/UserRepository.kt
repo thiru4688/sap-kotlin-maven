@@ -23,4 +23,8 @@ class UserRepository(
     fun save(user: UserEntity) {
         table.putItem(user)
     }
+
+    fun deleteById(id: String) {
+        table.deleteItem { it.key { k -> k.partitionValue(id) } }
+    }
 }

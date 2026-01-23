@@ -1,3 +1,4 @@
+/*
 package sap.kotlin.maven.graphql
 
 import kotlinx.serialization.Serializable
@@ -10,4 +11,4 @@ data class GraphQLRequest(val query: String)
 data class GraphQLResponse<T>(val data: T)
 
 @Serializable
-data class UsersData(val users: List<UserDto>)
+data class UsersData(val users: List<UserDto>)*/
