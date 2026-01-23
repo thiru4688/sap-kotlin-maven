@@ -1,11 +1,9 @@
 package sap.kotlin.demo
 
-import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema
 
-//interface UserRepository : JpaRepository<User, Long>
 
 @Repository
 class UserRepository(
