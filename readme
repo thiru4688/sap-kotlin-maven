@@ -1,0 +1,34 @@
+What we Initially followed (Old Flow)
+
+Postman
+   ↓
+REST Controller
+   ↓
+GraphQL Client
+   ↓
+GraphQL Controller
+   ↓
+Service
+   ↓
+Repository
+
+
+✅ What We Changed (Correct Architecture)
+
+REST Flow
+Postman
+   ↓
+REST Controller
+   ↓
+UserService
+   ↓
+Repository
+
+GraphQL Flow
+GraphQL Playground / Postman
+   ↓
+GraphQL Controller (Resolver)
+   ↓
+UserService
+   ↓
+Repository
