@@ -27,6 +27,8 @@ class UserService(private val repo: UserRepository) {
     }
 
     fun findAll() = repo.findAll()
-    @CacheEvict(value = ["users"], key = "#id")
+    @CacheEvict(  value = ["users"],
+        allEntries = true,
+        beforeInvocation = true)
     fun deleteById(id: String) = repo.deleteById(id)
 }

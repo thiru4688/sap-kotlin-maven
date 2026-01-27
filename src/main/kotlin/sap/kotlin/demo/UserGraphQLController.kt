@@ -6,9 +6,7 @@ import org.springframework.graphql.data.method.annotation.QueryMapping
 import org.springframework.stereotype.Controller
 
 @Controller
-class UserGraphQLController(
-//    private val userRepository: UserRepository
-    private val userService: UserService
+class UserGraphQLController(private val userService: UserService
 ) {
 
     @QueryMapping
