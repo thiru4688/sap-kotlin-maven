@@ -4,45 +4,45 @@ import org.springframework.stereotype.Service
 import sap.kotlin.maven.model.UserDto
 import sap.kotlin.maven.model.toDto
 import sap.kotlin.maven.model.toEntity
-//import sap.kotlin.maven.repository.UserCacheRepository
+import sap.kotlin.maven.repository.UserCacheRepository
 import sap.kotlin.maven.repository.UserDynamoRepository
 
 @Service
 class UserService(
     private val repo: UserDynamoRepository,
-    //private val cache: UserCacheRepository
+    private val cache: UserCacheRepository
 ) {
 
     fun getAll(): List<UserDto> {
 
         // 1️⃣ Try Redis first
-        /*cache.getAllUsers()?.let {
+        cache.getAllUsers()?.let {
             println("Cache HIT: all users")
             return it
-        }*/
+        }
 
         // 2️⃣ Cache miss → DynamoDB
         println("Cache MISS: all users")
         val users = repo.findAll().map { it.toDto() }
 
         // 3️⃣ Store in Redis
-        //cache.saveAllUsers(users)
+        cache.saveAllUsers(users)
 
         return users
     }
 
     fun getById(id: String): UserDto {
 
-        /*cache.getUserById(id)?.let {
+        cache.getUserById(id)?.let {
             println("Cache HIT: user $id")
             return it
-        }*/
+        }
 
         println("Cache MISS: user $id")
         val user = repo.findById(id)?.toDto()
             ?: throw RuntimeException("User not found")
 
-        //cache.saveUser(user)
+        cache.saveUser(user)
         return user
     }
 
@@ -50,8 +50,8 @@ class UserService(
         val saved = repo.save(user.toEntity()).toDto()
 
         // Invalidate cache
-        /*cache.evictAll()
-        cache.evictUser(saved.id)*/
+        cache.evictAll()
+        cache.evictUser(saved.id)
 
         return saved
     }
@@ -70,8 +70,8 @@ class UserService(
         repo.save(updated)
 
         // Invalidate cache
-        /*cache.evictAll()
-        cache.evictUser(id)*/
+        cache.evictAll()
+        cache.evictUser(id)
 
         return updated.toDto()
     }
@@ -81,8 +81,8 @@ class UserService(
         repo.deleteById(id)
 
         // Invalidate cache
-        /*cache.evictAll()
-        cache.evictUser(id)*/
+        cache.evictAll()
+        cache.evictUser(id)
     }
 
 }
