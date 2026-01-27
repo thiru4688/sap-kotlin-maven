@@ -1,24 +1,45 @@
 package sap.kotlin.maven.rest
 
 
-import org.springframework.graphql.support.DefaultExecutionGraphQlRequest
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
-import reactor.core.publisher.Mono
-import sap.kotlin.maven.client.GraphQLClient
+import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.*
 import sap.kotlin.maven.model.UserDto
-import java.util.Locale
+import sap.kotlin.maven.service.UserService
 
 @RestController
 @RequestMapping("/api")
-class UserController(private val graphQLClient: GraphQLClient) {
+class UserController(private val userService: UserService) {
 
     @GetMapping("/users")
-    suspend fun getUsers(): List<UserDto> {
-        return graphQLClient.fetchUsers()
+    fun getUsers(): List<UserDto> {
+        return userService.findAll()
+    }
+
+    @GetMapping("/users/{id}")
+    fun getUserById(@PathVariable id: Int): ResponseEntity<UserDto> {
+        val user = userService.findById(id)
+        return if (user != null) ResponseEntity.ok(user) else ResponseEntity.notFound().build()
+    }
+
+    @PostMapping("/users")
+    fun createUser(@RequestBody user: UserDto): ResponseEntity<String> {
+        val ok = userService.save(user)
+        return if (ok) ResponseEntity.status(201).body("User created") else ResponseEntity.status(500).body("Failed to create user")
+    }
+
+    @PutMapping("/users/{id}")
+    fun updateUser(@PathVariable id: Int, @RequestBody user: UserDto): ResponseEntity<String> {
+        if (id != user.id) {
+            return ResponseEntity.badRequest().body("ID in path and body must match")
+        }
+
+        val ok = userService.save(user)
+        return if (ok) ResponseEntity.ok("User updated") else ResponseEntity.status(500).body("Failed to update user")
+    }
+
+    @DeleteMapping("/users/{id}")
+    fun deleteUser(@PathVariable id: Int): ResponseEntity<String> {
+        val ok = userService.deleteById(id)
+        return if (ok) ResponseEntity.ok("User deleted") else ResponseEntity.status(500).body("Failed to delete user")
     }
 }
