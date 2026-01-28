@@ -1,8 +1,9 @@
-package sap.kotlin.maven.config
 
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider
+import software.amazon.awssdk.auth.credentials.AwsBasicCredentials
+import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient
 import software.amazon.awssdk.regions.Region
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient
@@ -10,18 +11,24 @@ import software.amazon.awssdk.services.dynamodb.DynamoDbClient
 @Configuration
 class DynamoDbConfig {
 
+
     @Bean
     fun dynamoDbClient(): DynamoDbClient {
         return DynamoDbClient.builder()
-            .region(Region.AP_SOUTHEAST_2)
-            .credentialsProvider(DefaultCredentialsProvider.create())
+            .region(Region.of("ap-southeast-2"))
+            .credentialsProvider(
+                StaticCredentialsProvider.create(
+                    AwsBasicCredentials.create("key", "secret")
+                )
+            )
             .build()
     }
 
     @Bean
-    fun dynamoDbEnhancedClient(client: DynamoDbClient): DynamoDbEnhancedClient {
-        return DynamoDbEnhancedClient.builder()
-            .dynamoDbClient(client)
+    fun dynamoDbEnhancedClient(
+        dynamoDbClient: DynamoDbClient
+    ): DynamoDbEnhancedClient =
+        DynamoDbEnhancedClient.builder()
+            .dynamoDbClient(dynamoDbClient)
             .build()
-    }
 }
