@@ -36,7 +36,7 @@ class UsersGraphQlControllerAws(private val userService: UsersService) {
     }
 
     @MutationMapping
-    fun deleteUser(@Argument id: Long): Boolean {
+     fun deleteUser(@Argument id: Long): Boolean {
         userService.deleteUser(id)
         return true
     }

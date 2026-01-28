@@ -1,29 +1,43 @@
 package sap.kotlin.maven.config
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import org.springframework.cache.CacheManager
 import org.springframework.cache.annotation.EnableCaching
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.data.redis.connection.RedisStandaloneConfiguration
-import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory
-import org.springframework.data.redis.core.RedisTemplate
+import org.springframework.context.annotation.Primary
+import org.springframework.data.redis.cache.RedisCacheConfiguration
+import org.springframework.data.redis.cache.RedisCacheManager
+import org.springframework.data.redis.connection.RedisConnectionFactory
+import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer
+import org.springframework.data.redis.serializer.RedisSerializationContext
+import org.springframework.data.redis.serializer.StringRedisSerializer
+import sap.kotlin.maven.model.Users
 
 @Configuration
 @EnableCaching
 class RedisConfig {
 
     @Bean
-    fun redisConnectionFactory(): LettuceConnectionFactory {
-        val config = RedisStandaloneConfiguration(
-            "users-0qfs0f.serverless.apse2.cache.amazonaws.com:6379", 6379
-        )
-//        config.setPassword("yourRedisAuthToken") // only if AUTH enabled
-        return LettuceConnectionFactory(config)
-    }
+    @Primary
+    fun cacheManager(connectionFactory: RedisConnectionFactory): CacheManager {
 
-    @Bean
-    fun redisTemplate(connectionFactory: LettuceConnectionFactory): RedisTemplate<String, Any> {
-        val template = RedisTemplate<String, Any>()
-        template.setConnectionFactory(connectionFactory)
-        return template
+        val valueSerializer = Jackson2JsonRedisSerializer(Users::class.java)
+
+        val config = RedisCacheConfiguration.defaultCacheConfig()
+            .serializeKeysWith(
+                RedisSerializationContext.SerializationPair.fromSerializer(
+                    StringRedisSerializer()
+                )
+            )
+            .serializeValuesWith(
+                RedisSerializationContext.SerializationPair.fromSerializer(
+                    valueSerializer
+                )
+            )
+
+        return RedisCacheManager.builder(connectionFactory)
+            .cacheDefaults(config)
+            .build()
     }
 }

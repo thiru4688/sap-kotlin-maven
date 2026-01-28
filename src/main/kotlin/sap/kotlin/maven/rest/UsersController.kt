@@ -28,7 +28,7 @@ class UsersController(private val userService: UsersService) {
     }
 
     @DeleteMapping("/{id}")
-    fun deleteUser(@PathVariable id: Long) {
+     fun deleteUser(@PathVariable id: Long) {
         userService.deleteUser(id)
     }
 }

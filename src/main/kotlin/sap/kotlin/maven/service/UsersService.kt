@@ -17,13 +17,11 @@ class UsersService(private val userRepository: UsersRepository) {
     @Cacheable(value = ["users"], key = "#id")
     fun getUser(id: Long) = userRepository.findById(id)
 
-    @Cacheable(value = ["users"])
     fun getAllUsers() = userRepository.findAll()
-
-    @CachePut(value = ["users"], key = "#user.id")
-
+//
+//    @CachePut(value = ["users"], key = "#user.id")
     fun updateUser(user: Users) = userRepository.update(user)
 
-    @CacheEvict(value = ["users"], key = "#id")
-    fun deleteUser(id: Long) = userRepository.delete(id)
+    @CacheEvict(value = ["users"], key = "#id", beforeInvocation = true)
+     fun deleteUser(id: Long) = userRepository.delete(id)
 }
