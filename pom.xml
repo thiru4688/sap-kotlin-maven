@@ -150,6 +150,7 @@
 				</dependencies>
 			</plugin>
 		</plugins>
+		<finalName>kotlin-springboot-aws-maven</finalName>
 	</build>
 
 </project>
