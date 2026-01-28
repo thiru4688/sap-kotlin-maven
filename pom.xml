@@ -125,6 +125,12 @@
 			<version>${aws.sdk.version}</version>
 		</dependency>
 
+		<!-- Spring Data Redis (Lettuce) for ElastiCache/Redis support -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-redis</artifactId>
+		</dependency>
+
 	</dependencies>
 
 	<build>
