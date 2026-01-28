@@ -24,19 +24,6 @@ class UserGraphQLController(private val userService: UserService
     ): User =
         userService.save(name = name, email = email)
 
-//    @MutationMapping
-//    fun updateUser(
-//        @Argument id: Long,
-//        @Argument name: String,
-//        @Argument email: String
-//    ): User {
-//        val user = userService.findById(id)
-//            .orElseThrow { RuntimeException("User not found") }
-//
-//        val updatedUser = user.copy(name = name, email = email)
-//        return userRepository.save(updatedUser)
-//    }
-
     @MutationMapping
     fun deleteUser(@Argument id: String): Boolean {
         userService.deleteById(id)

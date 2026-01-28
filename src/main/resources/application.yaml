@@ -1,7 +1,16 @@
+cloud:
+  aws:
+    region:
+      static: ap-south-1
+    stack:
+      auto: false
 spring:
   data:
+    dynamodb:
+      entity2ddl:
+        auto: none
     redis:
-      host: localhost
+      host: springboot-redis.zeyqhb.ng.0001.aps1.cache.amazonaws.com
       port: 6379
       timeout: 2000ms
   cache:

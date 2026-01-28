@@ -23,6 +23,7 @@ class UserService(private val repo: UserRepository) {
 
     @Cacheable(value = ["users"], key = "#id")
     fun findById(id: String): User? {
+        println("Fetching from dynamodb")
         return repo.findById(id)
     }
 

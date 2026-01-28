@@ -11,13 +11,19 @@ import software.amazon.awssdk.services.dynamodb.DynamoDbClient
 import java.net.URI
 
 @Configuration
-@Profile("prod")
-class DynamoDbConfig {
+@Profile("local")
+class DynamoDbLocalConfig {
 
     @Bean
     fun dynamoDbClient(): DynamoDbClient =
         DynamoDbClient.builder()
-            .region(Region.AP_SOUTH_1)
+            .endpointOverride(URI.create("http://localhost:8000"))
+            .region(Region.US_EAST_1)
+            .credentialsProvider(
+                StaticCredentialsProvider.create(
+                    AwsBasicCredentials.create("dummy", "dummy")
+                )
+            )
             .build()
 
     @Bean
