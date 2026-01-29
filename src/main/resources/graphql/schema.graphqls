@@ -7,10 +7,12 @@ type User {
 type Query {
   users: [User]
   userById(id: ID!): User
+  getUser(id: ID!): User
 }
 
 type Mutation {
   createUser(name: String!, email: String!): User
-  updateUser(id: ID!, name: String!, email: String!): User
+  createReactiveUser(name: String!, email: String!): User
   deleteUser(id: ID!): Boolean
+
 }
