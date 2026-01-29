@@ -2,7 +2,7 @@ package sap.kotlin.maven.model
 
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey
-//import java.io.Serializable
+import java.io.Serializable
 
 @DynamoDbBean
 data class Users (
@@ -10,4 +10,4 @@ data class Users (
     var id: Long = 0,
     var name: String? = "",
     var email: String = ""
-)
+) : Serializable

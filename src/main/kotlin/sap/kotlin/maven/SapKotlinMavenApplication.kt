@@ -8,6 +8,12 @@ import org.springframework.cache.annotation.EnableCaching
 @EnableCaching
 class SapKotlinMavenApplication
 
+
+
 fun main(args: Array<String>) {
+    print("Hello world!")
 	runApplication<SapKotlinMavenApplication>(*args)
+    print("Hello world!")
+
+
 }

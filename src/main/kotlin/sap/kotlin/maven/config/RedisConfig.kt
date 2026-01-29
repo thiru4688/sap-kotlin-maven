@@ -1,43 +1,40 @@
-package sap.kotlin.maven.config
-
-import com.fasterxml.jackson.databind.ObjectMapper
-import org.springframework.cache.CacheManager
-import org.springframework.cache.annotation.EnableCaching
-import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.Configuration
-import org.springframework.context.annotation.Primary
-import org.springframework.data.redis.cache.RedisCacheConfiguration
-import org.springframework.data.redis.cache.RedisCacheManager
-import org.springframework.data.redis.connection.RedisConnectionFactory
-import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer
-import org.springframework.data.redis.serializer.RedisSerializationContext
-import org.springframework.data.redis.serializer.StringRedisSerializer
-import sap.kotlin.maven.model.Users
-
-@Configuration
-@EnableCaching
-class RedisConfig {
-
-    @Bean
-    @Primary
-    fun cacheManager(connectionFactory: RedisConnectionFactory): CacheManager {
-
-        val valueSerializer = Jackson2JsonRedisSerializer(Users::class.java)
-
-        val config = RedisCacheConfiguration.defaultCacheConfig()
-            .serializeKeysWith(
-                RedisSerializationContext.SerializationPair.fromSerializer(
-                    StringRedisSerializer()
-                )
-            )
-            .serializeValuesWith(
-                RedisSerializationContext.SerializationPair.fromSerializer(
-                    valueSerializer
-                )
-            )
-
-        return RedisCacheManager.builder(connectionFactory)
-            .cacheDefaults(config)
-            .build()
-    }
-}
+//package sap.kotlin.maven.dbconfig
+//
+//
+//import org.springframework.context.annotation.Bean
+//import org.springframework.context.annotation.Configuration
+//import org.springframework.data.redis.connection.RedisConnectionFactory
+//import org.springframework.data.redis.core.RedisTemplate
+//import org.springframework.data.redis.serializer.GenericJacksonJsonRedisSerializer
+//import org.springframework.data.redis.serializer.StringRedisSerializer
+//// IMPORTANT: Use the 'tools.jackson' imports for Spring Boot 4 compatibility
+//import tools.jackson.databind.ObjectMapper
+//import tools.jackson.databind.json.JsonMapper
+//import tools.jackson.module.kotlin.KotlinModule
+//
+//@Configuration
+//class RedisConfig {
+//
+//    @Bean
+//    fun redisTemplate(connectionFactory: RedisConnectionFactory): RedisTemplate<String, Any> {
+//
+//        // Use the new Jackson 3 ObjectMapper
+//        val kotlinModule = KotlinModule.Builder().build()
+//
+//        // Use JsonMapper builder to create the ObjectMapper
+//        val objectMapper: ObjectMapper = JsonMapper.builder()
+//            .addModule(kotlinModule)
+//            .build()
+//
+//        val serializer = GenericJacksonJsonRedisSerializer(objectMapper)
+//
+//        return RedisTemplate<String, Any>().apply {
+//            setConnectionFactory(connectionFactory)
+//            keySerializer = StringRedisSerializer()
+//            valueSerializer = serializer
+//            hashKeySerializer = StringRedisSerializer()
+//            hashValueSerializer = serializer
+//            afterPropertiesSet()
+//        }
+//    }
+//}

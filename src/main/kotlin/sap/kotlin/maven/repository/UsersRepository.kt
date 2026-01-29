@@ -13,7 +13,7 @@ import kotlin.jvm.java
 class UsersRepository(private val dynamoDbEnhancedClient: DynamoDbEnhancedClient) {
 
     private val table: DynamoDbTable<Users> =
-        dynamoDbEnhancedClient.table("Users", TableSchema.fromBean(Users::class.java))
+        dynamoDbEnhancedClient.table("users-info", TableSchema.fromBean(Users::class.java))
 
     fun save(user: Users) {
         table.putItem(user)

@@ -11,17 +11,16 @@ import org.springframework.stereotype.Service
 @Service
 class UsersService(private val userRepository: UsersRepository) {
 
-    @CachePut(value = ["users"], key = "#user.id")
     fun createUser(user: Users) = userRepository.save(user)
 
     @Cacheable(value = ["users"], key = "#id")
     fun getUser(id: Long) = userRepository.findById(id)
 
     fun getAllUsers() = userRepository.findAll()
-//
-//    @CachePut(value = ["users"], key = "#user.id")
+
+    @CacheEvict(value = ["users"], key = "#id")
     fun updateUser(user: Users) = userRepository.update(user)
 
-    @CacheEvict(value = ["users"], key = "#id", beforeInvocation = true)
+    @CacheEvict(value = ["users"], key = "#id")
      fun deleteUser(id: Long) = userRepository.delete(id)
 }
