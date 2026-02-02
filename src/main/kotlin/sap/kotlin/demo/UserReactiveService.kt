@@ -1,6 +1,7 @@
 package sap.kotlin.demo
 
 import org.springframework.stereotype.Service
+import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import java.util.UUID
 
@@ -20,4 +21,7 @@ class UserReactiveService(private val repository: UserReactiveRepo) {
 
     fun getUser(userId: String): Mono<User> =
         repository.findById(userId)
+
+    fun getUsers(): Flux<User> =
+       repository.getUsers()
 }

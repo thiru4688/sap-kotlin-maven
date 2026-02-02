@@ -5,6 +5,7 @@ import org.springframework.graphql.data.method.annotation.MutationMapping
 import org.springframework.graphql.data.method.annotation.QueryMapping
 import org.springframework.stereotype.Component
 import org.springframework.stereotype.Controller
+import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
 @Controller
@@ -20,8 +21,12 @@ class UserReactiveController(private val service: UserReactiveService) {
     ): Mono<User> {
         println("🚀 resolver method entered")
        return service.createUser(name, email)
-            .doOnSubscribe { println("🔥 mutation called") }
-            .doOnNext { println("✅ saved user: $it") }
+    }
+
+    @QueryMapping(name = "reactiveUsers")
+    fun users(): Flux<User> {
+        return service.getUsers()
+
     }
 }
 

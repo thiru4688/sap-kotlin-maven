@@ -6,6 +6,7 @@ type User {
 
 type Query {
   users: [User]
+  reactiveUsers: [User]
   userById(id: ID!): User
   getUser(id: ID!): User
 }
